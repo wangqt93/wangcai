@@ -1,5 +1,5 @@
 <template>
     <div class="labesl">
-        labels
+        <Layout></Layout>
     </div>
 </template>

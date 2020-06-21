@@ -1,5 +1,7 @@
 <template>
     <div class="money">
-        <Layout></Layout>
+        <Layout>
+            <p>11</p>
+        </Layout>
     </div>
 </template>

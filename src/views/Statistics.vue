@@ -1,6 +1,5 @@
 <template>
     <div class="statistics">
-
-        statistics
+        <Layout></Layout>
     </div>
 </template>

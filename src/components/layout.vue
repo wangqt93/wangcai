@@ -1,6 +1,8 @@
 <template>
     <div class="layout">
-        <div class="container"></div>
+        <div class="container">
+            <slot></slot>
+        </div>
         <Nav></Nav>
     </div>
 </template>
