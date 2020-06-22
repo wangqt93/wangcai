@@ -14,6 +14,7 @@
     }
     .container {
         flex-grow: 1;
-        border: 1px solid green;
+        display: flex;
+        flex-direction: column-reverse;
     }
 </style>
