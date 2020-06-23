@@ -1,8 +1,8 @@
 <template>
     <div class="container">
         <ul class="types">
-            <li class='selected'>支出</li>
-            <li>收入</li>
+            <li :class= "type === '-' ? 'selected' : ''" @click="changLi('-')">支出</li>
+            <li :class= "type === '+' ? 'selected' : ''" @click="changLi('+')">收入</li>
         </ul>
         <div class="notes">
             <label>
@@ -22,6 +22,21 @@
         </div>
     </div>
 </template>
+<script>
+    export default {
+        data(){
+            return {
+                type: '-'
+            }
+        },
+        methods: {
+           changLi(type){
+               this.type = type
+               
+           }
+        }
+    }
+</script>
 <style scoped lang='scss'>
     .tags {
         padding: 1.6rem;
