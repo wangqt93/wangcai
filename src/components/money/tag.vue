@@ -6,19 +6,18 @@
         </ul>
         <div class="notes">
             <label>
+                {{value}}
                 <span>备注</span>
-                <input type="text" placeholder="在这里输入备注">
+                <input type="text" placeholder="在这里输入备注" v-model='value'>
             </label>
         </div>
-
         <div class="tags">
             <ul>
-                <li>衣</li>
-                <li>食</li>
-                <li>住</li>
-                <li>行</li>
+                <li v-for='item in tagList' :key='item' @click='addSelected(item)'
+                    :class="selectedTags.indexOf(item)>= 0 ? 'selected' : ''"
+                >{{item}}</li>
             </ul>
-            <button>新增标签</button>
+            <button @click='create'>新增标签</button>
         </div>
     </div>
 </template>
@@ -26,22 +25,61 @@
     export default {
         data(){
             return {
-                type: '-'
+                type: '-',
+                value: '',
+                selectedTags: []
             }
         },
+        props: ['tagList'],
         methods: {
            changLi(type){
                this.type = type
                
+           },
+        //    onChange(event){
+        //        this.value = event.target.value
+        //    },
+           addSelected(item){
+               if(this.selectedTags.indexOf(item)>=0){    //判断item是否存在
+                   let index = this.selectedTags.indexOf(item)
+                   this.selectedTags.splice(index,1)
+                  
+               }else{
+                    this.selectedTags.push(item)     
+               }
+               this.$emit('xxx',this.selectedTags)
+           },
+           create(){
+               let name = window.prompt('请输入标签名称')
+               if(name === ''){
+                   window.alert('标签名不能为空')
+               }else{
+                   this.$emit('update:tagList',[...this.tagList,name])
+               }
            }
+        },
+        mounted(){
+           
+        },
+        watch:{
+            value(newval){
+               
+                this.$emit('update:value',newval)
+            },
+            type(newval){
+                this.$emit('update:value',newval)
+            }
         }
     }
 </script>
-<style scoped lang='scss'>
+<style scoped lang='scss'> 
     .tags {
         padding: 1.6rem;
+        flex-grow: 1;
+        position: relative;
         > ul {
             display: flex;
+            flex-wrap: wrap;
             >li {
                 background:#d9d9d9;
                 $h1: 2.4rem;
@@ -51,6 +89,8 @@
                 border-radius: $h2;
                 padding: 0 1.6rem;
                 margin-right: $h2;
+                margin-bottom: $h2;
+                
             }
         }
         >button {
@@ -61,6 +101,14 @@
             padding-bottom: 3px;
             color: #999;
             outline: none;
+            position: absolute;
+            bottom: 1rem;
+            left: 1.6rem;
+
+        }
+        .selected{
+            background: #333;
+            color: #fff;
         }
     }
     .notes {

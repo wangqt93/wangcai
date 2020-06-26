@@ -1,36 +1,81 @@
 <template>
     <div class="btn">
-        <div class='output'>100</div>
+        <div class='output'>{{output}}</div>
         <div class='buttons clearfix'>
-            <button>1</button>
-            <button>2</button>
-            <button>3</button>
-            <button>+</button>
-            <button>删除</button>
-            <button>4</button>
-            <button>5</button>
-            <button>6</button>
-            <button>-</button>
-            <button>清空</button>
-            <button>7</button>
-            <button>8</button>
-            <button>9</button>
-            <button>×</button>
-            <button class='ok'>OK</button>
-            <button>0</button>
-            <button>.</button>
-            <button>%</button>
-            <button>÷</button>
+            <button @click='input'>1</button>
+            <button @click='input'>2</button>
+            <button @click='input'>3</button>
+            <button @click='output+="+"'>+</button>
+            <button @click='remove'>删除</button>
+            <button @click='input'>4</button>
+            <button @click='input'>5</button>
+            <button @click='input'>6</button>
+            <button @click='output+="-"'>-</button>
+            <button @click ='output="0"'>清空</button>
+            <button @click='input'>7</button>
+            <button @click='input'>8</button>
+            <button @click='input'>9</button>
+            <button @click='output+="×"'>×</button>
+            <button class='ok' @click='ok'>OK</button>
+            <button @click='input'>0</button>
+            <button @click='input'>.</button>
+            <button @click='output+="%"'>%</button>
+            <button @click='output+="÷"'>÷</button>
         </div>
     </div>
 </template>
+<script>
+    export default {
+        data(){
+            return {
+                output: '0'
+            }
+        },
+        methods:{
+            remove(){          //删除键功能
+                if(this.output.length === 1){
+                    this.output = '0'
+                }
+                else{
+                    this.output = this.output.slice(0,-1)
+                }  
+            },
+            ok(){
+               this.$emit('getok',this.output)
+            },
+            input(event){
+                let str = event.target.innerHTML  
+                if(this.output.length === 16) return
+                if(this.output === '0'){
+                    if(str ==='.'){
+                        this.output+=str
+                    }
+                    else {
+                        this.output = ""+str
+                    }
+                }
+                else if(this.output.includes('.') && str === '.') return
+                else {
+                    this.output+=str
+                }
+                
+            }
+        },
+        mounted(){
+            
+        },
+        watch:{
+            
+        }
+    }
+</script>
 <style scoped lang='scss'>
     .btn {
         >.output {
             font-size: 3.6rem;
             font-family: Consolas,monospace;  /*monospace 编程字体，字体等宽*/
-            padding: 0.6rem 1.2rem;
             text-align: right;
+            height: 6rem;
         }
         .buttons {
             width: 100vw;
