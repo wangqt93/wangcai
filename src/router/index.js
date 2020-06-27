@@ -4,6 +4,7 @@ import Money from '../views/Money.vue'
 import Labels from '../views/Labels.vue'
 import Statistics from '../views/Statistics.vue'
 import NotFound from '../views/NotFound.vue'
+import EditLable from '@/components/editlabel.vue'
 
 
 Vue.use(VueRouter)
@@ -24,6 +25,10 @@ Vue.use(VueRouter)
     {
       path: '/statistics',
       component: Statistics
+    },
+    {
+      path: '/labels/edit',
+      component: EditLable
     },
     {
       path: '/*',

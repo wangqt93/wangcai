@@ -1,8 +1,9 @@
 <template>
     <div class="money">
         <Layout>
+            <Tag  @xxx='y' @update:value='getdate'></Tag>
             <Btn @getok="putok"></Btn>
-            <Tag :tagList.sync='tagList' @xxx='y' @update:value='getdate'></Tag>
+            
         </Layout>
     </div>
 </template>
@@ -17,7 +18,6 @@
         },
         data(){
             return {
-                tagList: ['衣','食','住','行'],
                 record: {
                     tags: [],
                     notes: '',

@@ -1,16 +1,5 @@
 <template>
     <div class="container">
-        <ul class="types">
-            <li :class= "type === '-' ? 'selected' : ''" @click="changLi('-')">支出</li>
-            <li :class= "type === '+' ? 'selected' : ''" @click="changLi('+')">收入</li>
-        </ul>
-        <div class="notes">
-            <label>
-                {{value}}
-                <span>备注</span>
-                <input type="text" placeholder="在这里输入备注" v-model='value'>
-            </label>
-        </div>
         <div class="tags">
             <ul>
                 <li v-for='item in tagList' :key='item' @click='addSelected(item)'
@@ -19,6 +8,17 @@
             </ul>
             <button @click='create'>新增标签</button>
         </div>
+        <div class="notes">
+            <label>
+                {{value}}
+                <span>备注</span>
+                <input type="text" placeholder="在这里输入备注" v-model='value'>
+            </label>
+        </div>
+        <ul class="types">
+            <li :class= "type === '-' ? 'selected' : ''" @click="changLi('-')">支出</li>
+            <li :class= "type === '+' ? 'selected' : ''" @click="changLi('+')">收入</li>
+        </ul>
     </div>
 </template>
 <script>
@@ -27,10 +27,10 @@
             return {
                 type: '-',
                 value: '',
-                selectedTags: []
+                selectedTags: [],
+                tagList: this.$store.state.tagList  
             }
         },
-        props: ['tagList'],
         methods: {
            changLi(type){
                this.type = type
@@ -50,12 +50,7 @@
                this.$emit('xxx',this.selectedTags)
            },
            create(){
-               let name = window.prompt('请输入标签名称')
-               if(name === ''){
-                   window.alert('标签名不能为空')
-               }else{
-                   this.$emit('update:tagList',[...this.tagList,name])
-               }
+                this.$store.commit('changeTag')
            }
         },
         mounted(){
