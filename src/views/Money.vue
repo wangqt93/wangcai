@@ -3,7 +3,7 @@
         <Layout>
             <Tag  @xxx='y' @update:value='getdate'></Tag>
             <Btn @getok="putok"></Btn>
-            
+           
         </Layout>
     </div>
 </template>
@@ -19,13 +19,13 @@
         data(){
             return {
                 record: {
-                    tags: [],
+                    tags: '',
                     notes: '',
                     type: '-',
                     amount: 0,
                     createtime: ''
                 },
-                recordList: []
+                recordList: this.$store.state.recordList
             }
         },
         methods:{
@@ -43,17 +43,14 @@
                 this.record.amount = parseFloat(value)
                 //用户点击OK，将recordList保存到localStorage
                 const record2 = JSON.parse(JSON.stringify(this.record))   //深拷贝
-                record2.createtime = new Date()
+
+                record2.createtime = new Date().toJSON()          //toISOString()
+                console.log(record2.createtime)
                this.recordList.push(record2)
-                window.localStorage.setItem('recordList',JSON.stringify(this.recordList))
+               this.$store.commit('getrecordList',this.recordList)
+                // window.localStorage.setItem('recordList',JSON.stringify(this.recordList))
+
             }
-
-        },
-        mounted(){
-                if(window.localStorage.getItem('recordList')){
-                    this.recordList =  JSON.parse(localStorage.getItem('recordList'))
-                }
-
 
         }
     }

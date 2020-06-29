@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    recordList: localStorage.getItem('recordList') ? JSON.parse(localStorage.getItem('recordList')) : [],
     tagList: localStorage.getItem('tagList') ? localStorage.getItem('tagList').split(',') : ['衣','食','住','行'],
     setitem: localStorage.getItem('tagTitle') ? localStorage.getItem('tagTitle') : ''
   },
@@ -33,6 +34,11 @@ export default new Vuex.Store({
       let index = state.tagList.indexOf(state.setitem)
       state.tagList.splice(index, 1)
       localStorage.tagList = state.tagList
+    },
+    getrecordList(state,obj){
+      state.recordList = obj
+      window.localStorage.setItem('recordList', JSON.stringify(obj))
+      
     }
 
   },

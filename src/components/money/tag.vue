@@ -10,21 +10,21 @@
         </div>
         <div class="notes">
             <label>
-                {{value}}
                 <span>备注</span>
                 <input type="text" placeholder="在这里输入备注" v-model='value'>
             </label>
         </div>
-        <ul class="types">
-            <li :class= "type === '-' ? 'selected' : ''" @click="changLi('-')">支出</li>
-            <li :class= "type === '+' ? 'selected' : ''" @click="changLi('+')">收入</li>
-        </ul>
+        <Type :dataSource='arr3' :value.sync='type'></Type>
     </div>
 </template>
 <script>
     export default {
         data(){
             return {
+                arr3: [
+                    {text: '支出',value: '-'},
+                    {text: '收入',value: '+'}
+                ],
                 type: '-',
                 value: '',
                 selectedTags: [],
@@ -32,10 +32,10 @@
             }
         },
         methods: {
-           changLi(type){
-               this.type = type
+        //    changLi(type){
+        //        this.type = type
                
-           },
+        //    },
         //    onChange(event){
         //        this.value = event.target.value
         //    },
@@ -47,7 +47,8 @@
                }else{
                     this.selectedTags.push(item)     
                }
-               this.$emit('xxx',this.selectedTags)
+                console.log(this.selectedTags.join())
+               this.$emit('xxx',this.selectedTags.join())
            },
            create(){
                 this.$store.commit('changeTag')
@@ -58,8 +59,10 @@
         },
         watch:{
             value(newval){
-               
+   
                 this.$emit('update:value',newval)
+
+                
             },
             type(newval){
                 this.$emit('update:value',newval)
@@ -125,19 +128,5 @@
            background: #f5f5f5;
            outline: none;
        }
-    }
-    .types {
-        background: #c4c4c4;
-        display: flex;
-        font-size: 2.4rem;
-        >li {
-            width: 50%;
-            height: 6rem;
-            text-align: center;
-            line-height: 6.4rem;
-            &.selected {
-                border-bottom: 3px solid #333;
-            }
-        }
     }
 </style>

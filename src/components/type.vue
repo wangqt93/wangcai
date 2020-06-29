@@ -1,8 +1,11 @@
 <template>
     <div class="type">
         <ul class="types">
-            <li :class="types === '-'? 'selected':''" @click="changLi('-')">支出</li>
-            <li :class="types === '+'? 'selected' : ''" @click="changLi('+')">收入</li>
+            <li v-for='item in dataSource' :key="item.value" 
+            @click='changLi(item)'
+            :class="value === item.value ? 'selected' : ''"
+            >{{item.text}}</li>
+
         </ul>
     </div>
 </template>
@@ -10,12 +13,13 @@
     export default {
         data(){
             return {
-                types: '-',
+               
             }
         },
+        props:['dataSource','value'],
         methods: {
-            changLi(type){
-                this.types = type
+            changLi(obj){
+               this.$emit('update:value',obj.value)
             } 
         }  
     }
