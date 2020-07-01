@@ -7,6 +7,7 @@
             >{{item.text}}</li>
 
         </ul>
+        
     </div>
 </template>
 <script>

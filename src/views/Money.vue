@@ -5,6 +5,7 @@
             <Btn @getok="putok"></Btn>
            
         </Layout>
+
     </div>
 </template>
 <script>
@@ -25,7 +26,7 @@
                     amount: 0,
                     createtime: ''
                 },
-                recordList: this.$store.state.recordList
+                recordList: this.$store.state.recordList,
             }
         },
         methods:{

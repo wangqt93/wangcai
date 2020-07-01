@@ -2,17 +2,15 @@
     <div class="statistics">
         <Layout> 
             <Type class='x' :dataSource="arr1" :value.sync='value'></Type>
-            <Type class='y' :dataSource="arr2" :value.sync='date'></Type>
             <ol>
                 <li class='section' v-for="(group,index) in result" :key="index">
-                    <h3>{{index}}</h3>
-                    <span>合计</span>
+                    <h3>{{change(index)}}</h3>
+                    
                     <ol>
                         <li class='items' v-for='items in group' :key="items.id">
                             <span>{{items.item.tags}}</span>
                             <span>{{items.item.notes}}</span>  
-                            <span>￥{{items.item.amount}}</span>  
-                            
+                            <span ref='xx'>￥{{items.item.amount}}</span>  
                         </li>
                     </ol>
                 </li>
@@ -21,6 +19,8 @@
     </div>
 </template>
 <script>
+    import dayjs from 'dayjs'
+    console.log(dayjs().valueOf())
     export default {
         data(){
             return {
@@ -30,37 +30,42 @@
                     {text: '支出',value: '-'},
                     {text: '收入',value: '+'}
                 ],
-                arr2: [
-                    {text: '按天',value: 'day'},
-                    {text: '按周',value: 'week'},
-                    {text: '按月',value: 'month'},
-                ],
                 recordList: this.$store.state.recordList,
- 
             }
         },
         computed:{
-            result(){
-                console.log(this.recordList)
+            result(){                                    
                 let leng = this.recordList.length
                 let obj = {}
-                this.recordList.forEach(node=>{
-                    let [date,time] = node.createtime.split('T') 
-                    console.log(typeof node.createtime)
+                let recordList2 = this.recordList.filter(arr=>arr.type === this.value)
+                recordList2.forEach(node=>{
+                    let [date,time] = node.createtime.split('T')
                     obj[date] = obj[date] || []
-                    obj[date].push({titile: date,time: time,item:node})
+                    obj[date].push({item:node})
                 })
-                
-                
                 return obj
-            }
+            },
         },
-
+        methods:{
+            change(value){                             //时间显示
+                const oneDay = 86400*1000
+                let pastTime = dayjs(value)
+                if(pastTime.isSame(dayjs(),'day')){
+                    return '今天'
+                }else if(pastTime.isSame(dayjs().valueOf() - oneDay , 'day')){
+                    return '昨天'
+                }else if(pastTime.isSame(dayjs().valueOf() - oneDay*2,'day')){
+                    return '前天'
+                }
+                return value
+            },
+            
+        }
     }
 </script>
 <style scoped lang='scss'>
     .statistics{
-        
+        font-size: 1.4rem;
     }
     .x.type ::v-deep .selected {                 /*样式穿透，>>>无法在scss语言里解析，使用::v-deep代替*/
        background: #fff;
@@ -96,7 +101,7 @@
             
                 width: 6rem;
             }
-            > :nth-child(2){
+            >:nth-child(2){
                 color:#999;
                 width: 8rem;
                 margin-right: auto;
